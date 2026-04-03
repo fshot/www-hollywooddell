@@ -3,7 +3,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Hollywood Dell Civic Association">
-  <main class="flex min-h-screen items-center justify-center">
-    <h1 class="text-4xl font-bold">Hollywood Dell Civic Association</h1>
-  </main>
+  <div class="space-y-8">
+    <section>
+      <h1 class="text-4xl font-bold mb-4">Hollywood Dell Civic Association</h1>
+      <p class="text-lg text-navy/70 max-w-2xl">
+        Serving the Hollywood Dell neighborhood since 1952. Building a safer, stronger, more connected community.
+      </p>
+    </section>
+
+    <section class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-warm-gray rounded-lg p-6">
+        <h2 class="text-xl font-bold mb-2">Fire Safety</h2>
+        <p class="text-sm text-navy/70 mb-3">Home hardening resources, free assessments, and community fire safety programs.</p>
+        <a href="/fire-safety" class="text-sm font-semibold text-link">Learn more &rarr;</a>
+      </div>
+      <div class="bg-warm-gray rounded-lg p-6">
+        <h2 class="text-xl font-bold mb-2">Events</h2>
+        <p class="text-sm text-navy/70 mb-3">Monthly committee meetings, wildfire safety fairs, and community gatherings.</p>
+        <a href="/events" class="text-sm font-semibold text-link">View events &rarr;</a>
+      </div>
+      <div class="bg-warm-gray rounded-lg p-6">
+        <h2 class="text-xl font-bold mb-2">Get Involved</h2>
+        <p class="text-sm text-navy/70 mb-3">Join our fire safety committee, volunteer, or attend a meeting.</p>
+        <a href="/contact" class="text-sm font-semibold text-link">Contact us &rarr;</a>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
