@@ -1,0 +1,44 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+
+const allNews = await getCollection('news');
+const sorted = allNews.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Generate excerpts from rendered content
+async function getExcerpt(entry: typeof sorted[0]): Promise<string> {
+  const { remarkPluginFrontmatter } = await render(entry);
+  // Fallback: use raw body text, strip markdown
+  const body = entry.body || '';
+  const plain = body
+    .replace(/^---[\s\S]*?---/, '')
+    .replace(/[#*_\[\]()>`~]/g, '')
+    .replace(/\n+/g, ' ')
+    .trim();
+  return plain.length > 150 ? plain.slice(0, 150) + '...' : plain;
+}
+---
+
+<BaseLayout title="News & Updates | HDCA">
+  <h1 class="text-3xl font-bold text-navy mb-8">News & Updates</h1>
+
+  <div>
+    {await Promise.all(sorted.map(async (post) => {
+      const excerpt = await getExcerpt(post);
+      return (
+        <NewsCard
+          id={post.id}
+          title={post.data.title}
+          date={post.data.date}
+          author={post.data.author}
+          excerpt={excerpt}
+        />
+      );
+    }))}
+  </div>
+
+  {sorted.length === 0 && (
+    <p class="text-gray-600">No news yet. Check back soon!</p>
+  )}
+</BaseLayout>

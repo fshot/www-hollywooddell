@@ -1,0 +1,32 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  date: Date;
+  time: string;
+  location: string;
+  description: string;
+}
+
+const { id, title, date, time, location, description } = Astro.props;
+
+const month = date.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' }).toUpperCase();
+const day = date.getUTCDate();
+---
+
+<a href={`/events/${id}`} class="group block rounded-lg border border-gray-200 bg-white p-5 no-underline shadow-sm transition hover:shadow-md hover:border-teal">
+  <div class="flex gap-5">
+    <div class="flex-shrink-0 w-16 text-center">
+      <div class="text-sm font-bold text-teal-dark tracking-wider">{month}</div>
+      <div class="text-3xl font-bold text-navy leading-tight">{day}</div>
+    </div>
+    <div class="flex-1 min-w-0">
+      <h3 class="text-lg font-bold text-navy group-hover:text-teal-dark transition-colors m-0 leading-snug">{title}</h3>
+      <div class="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-600">
+        <span>{time}</span>
+        <span>{location}</span>
+      </div>
+      <p class="mt-2 text-sm text-gray-700 m-0 leading-relaxed">{description}</p>
+    </div>
+  </div>
+</a>
