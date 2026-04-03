@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const sections = [
+  {
+    title: 'Board of Directors',
+    href: '/about/board',
+    description: 'Meet the volunteer officers who lead the Hollywood Dell Civic Association.',
+  },
+  {
+    title: 'Bylaws',
+    href: '/about/bylaws',
+    description: 'The governing bylaws of the HDCA, including membership, elections, and fiscal policies.',
+  },
+  {
+    title: 'Government',
+    href: '/about/government',
+    description: 'Local government representatives and agencies serving the Hollywood Dell community.',
+  },
+];
+---
+
+<BaseLayout title="About HDCA | HDCA">
+  <article class="prose prose-lg max-w-none prose-headings:text-navy prose-a:text-link">
+    <h1>About HDCA</h1>
+    <p>
+      The Hollywood Dell Civic Association is a non-profit, all-volunteer neighborhood association
+      serving nearly 1,100 residences in the Hollywood Dell, focused on improving the community
+      for the general public good and encouraging civic engagement.
+    </p>
+    <div class="not-prose grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-8">
+      {sections.map((section) => (
+        <a
+          href={section.href}
+          class="block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:border-gold transition-all no-underline"
+        >
+          <h2 class="text-xl font-semibold text-navy mb-2">{section.title}</h2>
+          <p class="text-gray-600 text-sm">{section.description}</p>
+        </a>
+      ))}
+    </div>
+  </article>
+</BaseLayout>

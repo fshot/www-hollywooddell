@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const sections = [
+  {
+    title: 'Neighborhood Map',
+    href: '/community/map',
+    description: 'Interactive map of the Hollywood Dell neighborhood and its boundaries.',
+  },
+  {
+    title: 'Little Free Libraries',
+    href: '/community/libraries',
+    description: 'Find Little Free Libraries throughout the Dell neighborhood.',
+  },
+  {
+    title: 'Photos & Video',
+    href: '/community/photos',
+    description: 'Photo galleries and videos from Hollywood Dell events and community life.',
+  },
+];
+---
+
+<BaseLayout title="Community | HDCA">
+  <article class="prose prose-lg max-w-none prose-headings:text-navy prose-a:text-link">
+    <h1>Community</h1>
+    <p>
+      Explore the Hollywood Dell neighborhood — from our boundaries and landmarks to the
+      community resources and memories that make this neighborhood special.
+    </p>
+    <div class="not-prose grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-8">
+      {sections.map((section) => (
+        <a
+          href={section.href}
+          class="block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md hover:border-gold transition-all no-underline"
+        >
+          <h2 class="text-xl font-semibold text-navy mb-2">{section.title}</h2>
+          <p class="text-gray-600 text-sm">{section.description}</p>
+        </a>
+      ))}
+    </div>
+  </article>
+</BaseLayout>
