@@ -10,7 +10,8 @@ content:
     label: Events
     type: collection
     path: src/content/events
-    filename: "{fields.date}-{fields.title|slugify}"
+    format: yaml-frontmatter
+    filename: "{fields.date}-{fields.title|slugify}.md"
     view:
       fields: [title, date, time, location]
       sort: date
@@ -52,7 +53,8 @@ content:
     label: News & Announcements
     type: collection
     path: src/content/news
-    filename: "{fields.date}-{fields.title|slugify}"
+    format: yaml-frontmatter
+    filename: "{fields.date}-{fields.title|slugify}.md"
     view:
       fields: [title, date, author]
       sort: date
@@ -81,6 +83,7 @@ content:
     label: Pages
     type: collection
     path: src/content/pages
+    format: yaml-frontmatter
     view:
       fields: [title]
     fields:
