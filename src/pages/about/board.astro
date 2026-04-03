@@ -12,30 +12,36 @@ const { Content } = await render(entry);
   </div>
 </PageLayout>
 
-<style>
-  .board-bios :global(img) {
-    width: 220px;
-    height: auto;
+<style is:global>
+  .board-bios img {
+    width: 220px !important;
+    max-width: 220px !important;
+    height: auto !important;
     float: left;
-    margin: 0 1.5rem 1rem 0;
+    margin: 0.25rem 1.5rem 1rem 0 !important;
     border-radius: 0.5rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   }
 
-  .board-bios :global(h2) {
+  .board-bios h2 {
+    clear: both;
+    padding-top: 0.5rem;
+  }
+
+  .board-bios hr {
     clear: both;
   }
 
-  .board-bios :global(hr) {
-    clear: both;
+  .board-bios p {
+    overflow: hidden;
   }
 
   @media (max-width: 640px) {
-    .board-bios :global(img) {
-      float: none;
-      display: block;
-      margin: 0 auto 1rem;
-      width: 200px;
+    .board-bios img {
+      float: none !important;
+      display: block !important;
+      margin: 0 auto 1rem !important;
+      width: 200px !important;
     }
   }
 </style>
