@@ -11,10 +11,8 @@ content:
     type: collection
     path: src/content/events
     format: yaml-frontmatter
-    filename: "{fields.date}-{fields.title|slugify}.md"
     view:
       fields: [title, date, time, location]
-      sort: date
     fields:
       - name: title
         label: Title
@@ -54,10 +52,8 @@ content:
     type: collection
     path: src/content/news
     format: yaml-frontmatter
-    filename: "{fields.date}-{fields.title|slugify}.md"
     view:
       fields: [title, date, author]
-      sort: date
     fields:
       - name: title
         label: Title
@@ -70,7 +66,6 @@ content:
       - name: author
         label: Author
         type: string
-        default: HDCA
       - name: tags
         label: Tags
         type: string
