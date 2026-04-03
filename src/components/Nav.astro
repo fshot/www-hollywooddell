@@ -35,101 +35,110 @@ const navItems = [
 ];
 ---
 
-<header class="bg-white border-b-3 border-gold sticky top-0 z-50">
-  <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
-    <!-- Site name -->
-    <a href="/" class="text-navy font-bold text-xl tracking-tight no-underline hover:text-navy">
-      Hollywood<span class="text-gold">Dell</span>
+<header>
+  <!-- Banner image — scrolls with the page -->
+  <div class="w-full">
+    <a href="/">
+      <img
+        src="/images/top-banner.jpg"
+        alt="Hollywood Dell — view of the Hollywood Sign"
+        class="w-full h-auto block"
+      />
     </a>
-
-    <!-- Desktop nav -->
-    <nav class="hidden lg:flex items-center gap-1" aria-label="Main navigation">
-      {navItems.map((item) => (
-        <div class="relative group">
-          <a
-            href={item.href}
-            class="px-3 py-2 text-sm font-semibold text-navy no-underline hover:text-gold-dark transition-colors inline-flex items-center gap-1"
-          >
-            {item.label}
-            {item.children && (
-              <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            )}
-          </a>
-          {item.children && (
-            <div class="absolute left-0 top-full pt-1 hidden group-hover:block">
-              <div class="bg-white border border-gray-200 rounded shadow-lg py-1 min-w-44">
-                {item.children.map((child) => (
-                  <a
-                    href={child.href}
-                    class="block px-4 py-2 text-sm text-navy no-underline hover:bg-warm-gray hover:text-gold-dark transition-colors"
-                  >
-                    {child.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      ))}
-    </nav>
-
-    <!-- Mobile hamburger button -->
-    <button
-      id="mobile-menu-btn"
-      class="lg:hidden p-2 text-navy hover:text-gold-dark"
-      aria-label="Toggle menu"
-      aria-expanded="false"
-    >
-      <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-      <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
   </div>
 
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="lg:hidden hidden border-t border-gray-200 bg-white">
-    <nav class="max-w-6xl mx-auto px-4 py-3 space-y-1" aria-label="Mobile navigation">
-      {navItems.map((item) => (
-        <div>
-          {item.children ? (
-            <div>
-              <button
-                class="mobile-dropdown-btn w-full text-left px-3 py-2 text-sm font-semibold text-navy hover:text-gold-dark flex items-center justify-between"
-                aria-expanded="false"
-              >
-                {item.label}
-                <svg class="w-3 h-3 opacity-50 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              <div class="mobile-dropdown hidden pl-4">
-                {item.children.map((child) => (
-                  <a
-                    href={child.href}
-                    class="block px-3 py-2 text-sm text-navy no-underline hover:text-gold-dark"
-                  >
-                    {child.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-          ) : (
+  <!-- Nav bar — sticky gold bar -->
+  <nav class="bg-gold sticky top-0 z-50 border-b-2 border-gold-dark">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-12">
+      <!-- Desktop nav -->
+      <div class="hidden lg:flex items-center gap-1 w-full justify-center" aria-label="Main navigation">
+        {navItems.map((item) => (
+          <div class="relative group">
             <a
               href={item.href}
-              class="block px-3 py-2 text-sm font-semibold text-navy no-underline hover:text-gold-dark"
+              class="px-3 py-2 text-sm font-semibold text-navy no-underline hover:font-bold inline-flex items-center gap-1"
             >
               {item.label}
+              {item.children && (
+                <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              )}
             </a>
-          )}
-        </div>
-      ))}
-    </nav>
-  </div>
+            {item.children && (
+              <div class="absolute left-0 top-full pt-1 hidden group-hover:block">
+                <div class="bg-white border border-gold-dark rounded shadow-lg py-1 min-w-44">
+                  {item.children.map((child) => (
+                    <a
+                      href={child.href}
+                      class="block px-4 py-2 text-sm text-navy no-underline hover:bg-gold/30 hover:font-bold"
+                    >
+                      {child.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <!-- Mobile hamburger button -->
+      <button
+        id="mobile-menu-btn"
+        class="lg:hidden p-2 text-navy ml-auto"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+      >
+        <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="lg:hidden hidden bg-gold border-t border-gold-dark">
+      <div class="max-w-6xl mx-auto px-4 py-3 space-y-1" aria-label="Mobile navigation">
+        {navItems.map((item) => (
+          <div>
+            {item.children ? (
+              <div>
+                <button
+                  class="mobile-dropdown-btn w-full text-left px-3 py-2 text-sm font-semibold text-navy flex items-center justify-between"
+                  aria-expanded="false"
+                >
+                  {item.label}
+                  <svg class="w-3 h-3 opacity-50 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="mobile-dropdown hidden pl-4">
+                  {item.children.map((child) => (
+                    <a
+                      href={child.href}
+                      class="block px-3 py-2 text-sm text-navy no-underline hover:font-bold"
+                    >
+                      {child.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <a
+                href={item.href}
+                class="block px-3 py-2 text-sm font-semibold text-navy no-underline hover:font-bold"
+              >
+                {item.label}
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </nav>
 </header>
 
 <script>
