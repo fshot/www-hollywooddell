@@ -6,9 +6,10 @@ import Footer from '../components/Footer.astro'
 interface Props {
   title: string;
   description?: string;
+  wide?: boolean;
 }
 
-const { title, description = 'Hollywood Dell Civic Association' } = Astro.props;
+const { title, description = 'Hollywood Dell Civic Association', wide = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -27,7 +28,7 @@ const { title, description = 'Hollywood Dell Civic Association' } = Astro.props;
   </head>
   <body class="flex flex-col min-h-screen">
     <Nav />
-    <main class="flex-1 w-full max-w-6xl mx-auto px-4 py-8">
+    <main class:list={["flex-1 w-full", !wide && "max-w-6xl mx-auto px-4 py-8"]}>
       <slot />
     </main>
     <Footer />

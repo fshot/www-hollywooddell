@@ -1,32 +1,161 @@
 ---
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import EventCard from '../components/EventCard.astro';
+import NewsCard from '../components/NewsCard.astro';
+
+// Events: future only, ascending, first 3
+const allEvents = await getCollection('events');
+const now = new Date();
+const upcomingEvents = allEvents
+  .filter(e => e.data.date >= now)
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
+  .slice(0, 3);
+
+// News: most recent 2
+const allNews = await getCollection('news');
+const recentNews = allNews
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 2);
+
+// Generate excerpts
+async function getExcerpt(entry: typeof recentNews[0]): Promise<string> {
+  await render(entry);
+  const body = entry.body || '';
+  const plain = body
+    .replace(/^---[\s\S]*?---/, '')
+    .replace(/[#*_\[\]()>`~]/g, '')
+    .replace(/\n+/g, ' ')
+    .trim();
+  return plain.length > 150 ? plain.slice(0, 150) + '...' : plain;
+}
 ---
 
-<BaseLayout title="Hollywood Dell Civic Association">
-  <div class="space-y-8">
-    <section>
-      <h1 class="text-4xl font-bold mb-4">Hollywood Dell Civic Association</h1>
-      <p class="text-lg text-navy/70 max-w-2xl">
-        Serving the Hollywood Dell neighborhood since 1952. Building a safer, stronger, more connected community.
-      </p>
-    </section>
+<BaseLayout title="Hollywood Dell Civic Association" wide>
 
-    <section class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="bg-warm-gray rounded-lg p-6">
-        <h2 class="text-xl font-bold mb-2">Fire Safety</h2>
-        <p class="text-sm text-navy/70 mb-3">Home hardening resources, free assessments, and community fire safety programs.</p>
-        <a href="/fire-safety" class="text-sm font-semibold text-link">Learn more &rarr;</a>
+  <!-- Hero Banner -->
+  <Hero
+    heading="Hollywood Dell Civic Association"
+    subheading="A Firewise USA® Certified Community"
+    backgroundImage="/images/hero-dell-overview.jpg"
+    primaryCta={{ text: "Fire Safety Resources", href: "/fire-safety" }}
+    secondaryCta={{ text: "Upcoming Events", href: "/events" }}
+  />
+
+  <!-- Upcoming Events -->
+  <section class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold text-navy mb-8">Upcoming Events</h2>
+    {upcomingEvents.length > 0 ? (
+      <div class="space-y-4">
+        {upcomingEvents.map(event => (
+          <EventCard
+            id={event.id}
+            title={event.data.title}
+            date={event.data.date}
+            time={event.data.time}
+            location={event.data.location}
+            description={event.data.description}
+          />
+        ))}
       </div>
-      <div class="bg-warm-gray rounded-lg p-6">
-        <h2 class="text-xl font-bold mb-2">Events</h2>
-        <p class="text-sm text-navy/70 mb-3">Monthly committee meetings, wildfire safety fairs, and community gatherings.</p>
-        <a href="/events" class="text-sm font-semibold text-link">View events &rarr;</a>
+    ) : (
+      <p class="text-gray-600">No upcoming events. Check back soon!</p>
+    )}
+    <div class="mt-8">
+      <a href="/events" class="text-lg font-semibold text-link hover:text-navy">
+        View all events &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- Latest News -->
+  <section class="bg-warm-gray">
+    <div class="max-w-6xl mx-auto px-4 py-16">
+      <h2 class="text-3xl font-bold text-navy mb-8">Latest News</h2>
+      {recentNews.length > 0 ? (
+        <div>
+          {await Promise.all(recentNews.map(async (post) => {
+            const excerpt = await getExcerpt(post);
+            return (
+              <NewsCard
+                id={post.id}
+                title={post.data.title}
+                date={post.data.date}
+                author={post.data.author}
+                excerpt={excerpt}
+              />
+            );
+          }))}
+        </div>
+      ) : (
+        <p class="text-gray-600">No news yet. Check back soon!</p>
+      )}
+      <div class="mt-8">
+        <a href="/news" class="text-lg font-semibold text-link hover:text-navy">
+          View all news &rarr;
+        </a>
       </div>
-      <div class="bg-warm-gray rounded-lg p-6">
-        <h2 class="text-xl font-bold mb-2">Get Involved</h2>
-        <p class="text-sm text-navy/70 mb-3">Join our fire safety committee, volunteer, or attend a meeting.</p>
-        <a href="/contact" class="text-sm font-semibold text-link">Contact us &rarr;</a>
+    </div>
+  </section>
+
+  <!-- Fire Safety Spotlight -->
+  <section class="bg-teal/10">
+    <div class="max-w-6xl mx-auto px-4 py-16">
+      <h2 class="text-3xl font-bold text-navy mb-4">Protecting Our Community</h2>
+      <p class="text-lg text-navy/80 max-w-3xl mb-10">
+        Hollywood Dell is a Firewise USA&reg; certified community, committed to
+        reducing wildfire risk through education, home hardening, and neighborhood
+        preparedness. Our Fire Safety Committee coordinates free resources to help
+        you protect your home and family.
+      </p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <a href="/fire-safety" class="group block bg-white rounded-lg p-6 shadow-sm border border-gray-200 no-underline hover:shadow-md hover:border-teal transition">
+          <div class="text-3xl mb-3">🏠</div>
+          <h3 class="text-lg font-bold text-navy group-hover:text-teal-dark transition-colors mb-2">Free Home Assessment</h3>
+          <p class="text-sm text-navy/70 m-0">Get a no-cost wildfire risk assessment of your home from MySafe:LA or RCDSMM trained assessors.</p>
+        </a>
+        <a href="/fire-safety/home-hardening" class="group block bg-white rounded-lg p-6 shadow-sm border border-gray-200 no-underline hover:shadow-md hover:border-teal transition">
+          <div class="text-3xl mb-3">🛡️</div>
+          <h3 class="text-lg font-bold text-navy group-hover:text-teal-dark transition-colors mb-2">Home Hardening Guide</h3>
+          <p class="text-sm text-navy/70 m-0">Learn how to retrofit vents, roofing, and landscaping to protect your home from ember intrusion.</p>
+        </a>
+        <a href="/fire-safety/legislation" class="group block bg-white rounded-lg p-6 shadow-sm border border-gray-200 no-underline hover:shadow-md hover:border-teal transition">
+          <div class="text-3xl mb-3">📋</div>
+          <h3 class="text-lg font-bold text-navy group-hover:text-teal-dark transition-colors mb-2">Track Legislation</h3>
+          <p class="text-sm text-navy/70 m-0">Follow CA wildfire bills on home hardening loans, insurance reform, and prescribed fire.</p>
+        </a>
       </div>
-    </section>
-  </div>
+      <div class="mt-10">
+        <a href="/fire-safety" class="text-lg font-semibold text-link hover:text-navy">
+          Learn more about fire safety &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Get Involved -->
+  <section class="bg-warm-gray">
+    <div class="max-w-6xl mx-auto px-4 py-16">
+      <h2 class="text-3xl font-bold text-navy mb-8">Get Involved</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+          <h3 class="text-lg font-bold text-navy mb-2">Attend a Meeting</h3>
+          <p class="text-sm text-navy/70 mb-4">Fire Safety Committee meets the first Wednesday of each month at 7pm. All residents welcome.</p>
+          <a href="/events" class="text-sm font-semibold text-link hover:text-navy">See schedule &rarr;</a>
+        </div>
+        <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+          <h3 class="text-lg font-bold text-navy mb-2">Join HDCA</h3>
+          <p class="text-sm text-navy/70 mb-4">Membership is $50/year per household. Support neighborhood programs, events, and advocacy.</p>
+          <a href="/members" class="text-sm font-semibold text-link hover:text-navy">Become a member &rarr;</a>
+        </div>
+        <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+          <h3 class="text-lg font-bold text-navy mb-2">Subscribe</h3>
+          <p class="text-sm text-navy/70 mb-4">Get email updates on fire safety, community events, and committee activities.</p>
+          <a href="/subscribe" class="text-sm font-semibold text-link hover:text-navy">Sign up for updates &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </BaseLayout>
