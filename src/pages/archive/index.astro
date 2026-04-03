@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const allArchive = await getCollection('archive');
+const sorted = allArchive.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Group by year
+const byYear = new Map<number, typeof sorted>();
+for (const entry of sorted) {
+  const year = entry.data.date.getUTCFullYear();
+  if (!byYear.has(year)) byYear.set(year, []);
+  byYear.get(year)!.push(entry);
+}
+---
+
+<BaseLayout title="Archive | HDCA">
+  <h1 class="text-3xl font-bold text-navy mb-4">Archive</h1>
+  <p class="text-gray-500 mb-8">Historical content from the Hollywood Dell Civic Association website.</p>
+
+  {[...byYear.entries()].map(([year, entries]) => (
+    <section class="mb-8">
+      <h2 class="text-lg font-semibold text-gray-400 mb-3 border-b border-gray-200 pb-1">{year}</h2>
+      <ul class="space-y-2">
+        {entries.map(entry => {
+          const formatted = entry.data.date.toLocaleDateString('en-US', {
+            year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC',
+          });
+          return (
+            <li class="text-gray-500">
+              <span class="text-sm text-gray-400 inline-block w-32">{formatted}</span>
+              {entry.data.originalUrl ? (
+                <a href={entry.data.originalUrl} target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-navy no-underline transition">
+                  {entry.data.title}
+                </a>
+              ) : (
+                <span class="text-gray-600">{entry.data.title}</span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  ))}
+
+  {sorted.length === 0 && (
+    <p class="text-gray-500">No archived content yet.</p>
+  )}
+</BaseLayout>
