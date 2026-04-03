@@ -1,0 +1,96 @@
+# Pages CMS Configuration
+# https://pagescms.org/docs/configuration/
+
+media:
+  input: public/images
+  output: /images
+
+content:
+  - name: events
+    label: Events
+    type: collection
+    path: src/content/events
+    filename: "{fields.date}-{fields.title|slugify}"
+    view:
+      fields: [title, date, time, location]
+      sort: date
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: endDate
+        label: End Date
+        type: date
+      - name: time
+        label: Time
+        type: string
+        required: true
+      - name: location
+        label: Location
+        type: string
+        required: true
+      - name: description
+        label: Short Description
+        type: text
+        required: true
+      - name: image
+        label: Image
+        type: image
+      - name: link
+        label: External Link
+        type: string
+      - name: body
+        label: Details
+        type: rich-text
+
+  - name: news
+    label: News & Announcements
+    type: collection
+    path: src/content/news
+    filename: "{fields.date}-{fields.title|slugify}"
+    view:
+      fields: [title, date, author]
+      sort: date
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: author
+        label: Author
+        type: string
+        default: HDCA
+      - name: tags
+        label: Tags
+        type: string
+        list: true
+      - name: body
+        label: Content
+        type: rich-text
+
+  - name: pages
+    label: Pages
+    type: collection
+    path: src/content/pages
+    view:
+      fields: [title]
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: description
+        label: Description
+        type: string
+      - name: body
+        label: Content
+        type: rich-text
